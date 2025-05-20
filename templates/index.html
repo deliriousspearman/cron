@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Time Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Enter a Cron Expression</h2>
+        <form method="POST">
+            <input type="text" name="cron_expression" placeholder="*/5 * * * *" required>
+
+            <label for="timezone">Select Timezone:</label>
+            <select name="timezone" id="timezone">
+                {% for tz in timezones %}
+                    <option value="{{ tz }}" {% if tz == selected_timezone %}selected{% endif %}>{{ tz }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Convert</button>
+        </form>
+
+        {% if result %}
+            <div class="result">
+                {% if result.error %}
+                    <p class="error">Error: {{ result.error }}</p>
+                {% else %}
+                    <p><strong>UTC Time:</strong> {{ result['UTC'] }}</p>
+                    <p><strong>{{ selected_timezone }} Time:</strong> {{ result['Selected Timezone'] }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
